@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import online.dailyq.databinding.FragmentTodayBinding
 import online.dailyq.ui.base.BaseFragment
+import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -36,6 +37,8 @@ class TodayFragment : BaseFragment() {
             conn.readTimeout = 5000
             conn.requestMethod = "GET"
 
+            conn.setRequestProperty("Accept", "application/json")   // text/plain -> application/json
+
             conn.connect()
 
             val reader = BufferedReader(InputStreamReader(conn.inputStream))
@@ -43,8 +46,13 @@ class TodayFragment : BaseFragment() {
             reader.close()
             conn.disconnect()
 
+            val json = JSONObject(questionBody)
+            val message = json.getString("message")
+            val date = json.getString("date")
+
             activity?.runOnUiThread {
-                binding.question.text = questionBody
+                binding.question.text = message
+                binding.date.text = date
             }
         }.start()
     }
