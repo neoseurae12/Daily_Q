@@ -12,6 +12,8 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import java.text.DateFormat
+import java.util.Locale
 
 class TodayFragment : BaseFragment() {
 
@@ -57,6 +59,9 @@ class TodayFragment : BaseFragment() {
             val gson = Gson()
             val helloWorld = gson.fromJson(questionBody, HelloWorld::class.java)
 
+            // Date 타입 반영
+            val dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.KOREA)
+
             activity?.runOnUiThread {
                 /* JSONObject 버전
                 binding.question.text = message
@@ -65,7 +70,8 @@ class TodayFragment : BaseFragment() {
 
                 // Gson 버전
                 binding.question.text = helloWorld.message
-                binding.date.text = helloWorld.date
+                //binding.date.text = helloWorld.date
+                binding.date.text = dateFormat.format(helloWorld.date)  // Date 타입 반영
             }
         }.start()
     }

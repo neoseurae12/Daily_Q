@@ -1,3 +1,5 @@
 package online.dailyq.api.response
 
-data class HelloWorld(val date: String, val message: String)
+import java.util.Date
+
+data class HelloWorld(val date: Date, val message: String)
