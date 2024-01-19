@@ -5,4 +5,4 @@ Daily_Q는 질문에 답하면서 내 생각을 정리하고 서로에 대해 �
 
 ## 현재 진척도
 
-<img src="https://velog.velcdn.com/images/neoseurae12/post/cd6e2c58-f6e9-4aaf-86b0-78946cd64358/image.png" />
+<img src="https://velog.velcdn.com/images/neoseurae12/post/cd6e2c58-f6e9-4aaf-86b0-78946cd64358/image.png" width="400" />
