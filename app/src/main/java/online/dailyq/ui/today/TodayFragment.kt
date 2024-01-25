@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.gson.Gson
-import online.dailyq.api.response.HelloWorld
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import online.dailyq.api.ApiService
+import online.dailyq.api.response.Question
 import online.dailyq.databinding.FragmentTodayBinding
 import online.dailyq.ui.base.BaseFragment
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
 import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 class TodayFragment : BaseFragment() {
@@ -32,6 +32,20 @@ class TodayFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // REST API with Retrofit 버전
+        viewLifecycleOwner.lifecycleScope.launch {
+            val api = ApiService.create()
+
+            val qidDateFormat = SimpleDateFormat("yyyy-MM-dd")
+            val qid: String = qidDateFormat.format(Date())
+            val question: Question = api.getQuestion(qid)
+
+            val dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.KOREA)
+            binding.date.text = dateFormat.format(qidDateFormat.parse(question.id))
+            binding.question.text = question.text
+        }
+
+        /* ‘Hello, world!’ API 버전
         Thread {
             val url = URL("http://10.0.2.2:5000/v1/hello-world")
 
@@ -40,7 +54,10 @@ class TodayFragment : BaseFragment() {
             conn.readTimeout = 5000
             conn.requestMethod = "GET"
 
-            conn.setRequestProperty("Accept", "application/json")   // text/plain -> application/json
+            conn.setRequestProperty(
+                "Accept",
+                "application/json"
+            )   // text/plain -> application/json
 
             conn.connect()
 
@@ -74,6 +91,7 @@ class TodayFragment : BaseFragment() {
                 binding.date.text = dateFormat.format(helloWorld.date)  // Date 타입 반영
             }
         }.start()
+         */
     }
 
     override fun onDestroyView() {
