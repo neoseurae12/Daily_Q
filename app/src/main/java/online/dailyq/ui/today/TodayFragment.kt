@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
-import online.dailyq.api.ApiService
 import online.dailyq.api.response.Question
 import online.dailyq.databinding.FragmentTodayBinding
 import online.dailyq.ui.base.BaseFragment
@@ -34,8 +33,6 @@ class TodayFragment : BaseFragment() {
 
         // REST API with Retrofit 버전
         viewLifecycleOwner.lifecycleScope.launch {
-            val api = ApiService.create()
-
             val qidDateFormat = SimpleDateFormat("yyyy-MM-dd")
             val qid: String = qidDateFormat.format(Date())
             val question: Question = api.getQuestion(qid)
