@@ -3,11 +3,13 @@ package online.dailyq.api
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import online.dailyq.api.converter.LocalDateConverterFactory
 import online.dailyq.api.response.Question
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import java.time.LocalDate
 
 interface ApiService {
 
@@ -24,6 +26,7 @@ interface ApiService {
             val retrofit = Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:5000")
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(LocalDateConverterFactory())
                 .build()
             val api = retrofit.create(ApiService::class.java)
             return api
@@ -39,5 +42,5 @@ interface ApiService {
     }
 
     @GET("v1/questions/{qid}")
-    suspend fun getQuestion(@Path("qid") qid: String): Question
+    suspend fun getQuestion(@Path("qid") qid: LocalDate): Question
 }

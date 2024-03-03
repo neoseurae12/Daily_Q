@@ -11,7 +11,7 @@ import online.dailyq.databinding.FragmentTodayBinding
 import online.dailyq.ui.base.BaseFragment
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.time.LocalDate
 import java.util.Locale
 
 class TodayFragment : BaseFragment() {
@@ -34,8 +34,7 @@ class TodayFragment : BaseFragment() {
         // REST API with Retrofit 버전
         viewLifecycleOwner.lifecycleScope.launch {
             val qidDateFormat = SimpleDateFormat("yyyy-MM-dd")
-            val qid: String = qidDateFormat.format(Date())
-            val question: Question = api.getQuestion(qid)
+            val question: Question = api.getQuestion(LocalDate.now())
 
             val dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.KOREA)
             binding.date.text = dateFormat.format(qidDateFormat.parse(question.id))
