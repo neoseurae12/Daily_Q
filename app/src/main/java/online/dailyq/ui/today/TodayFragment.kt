@@ -9,10 +9,8 @@ import kotlinx.coroutines.launch
 import online.dailyq.api.response.Question
 import online.dailyq.databinding.FragmentTodayBinding
 import online.dailyq.ui.base.BaseFragment
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.util.Locale
+import java.time.format.DateTimeFormatter
 
 class TodayFragment : BaseFragment() {
 
@@ -33,11 +31,10 @@ class TodayFragment : BaseFragment() {
 
         // REST API with Retrofit 버전
         viewLifecycleOwner.lifecycleScope.launch {
-            val qidDateFormat = SimpleDateFormat("yyyy-MM-dd")
             val question: Question = api.getQuestion(LocalDate.now())
+            val dateFormatter = DateTimeFormatter.ofPattern("yyyy. M. d.")
 
-            val dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.KOREA)
-            binding.date.text = dateFormat.format(qidDateFormat.parse(question.id))
+            binding.date.text = dateFormatter.format(question.id)
             binding.question.text = question.text
         }
 

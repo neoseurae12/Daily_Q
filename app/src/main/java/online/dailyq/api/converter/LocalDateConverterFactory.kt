@@ -10,7 +10,7 @@ class LocalDateConverterFactory: Converter.Factory() {
         type: Type,
         annotations: Array<out Annotation>,
         retrofit: Retrofit
-    ): Converter<*, String>? {
+    ): Converter<LocalDate, String>? {
         if (type == LocalDate::class.java) {
             return Converter<LocalDate, String> { it.toString() }
         }

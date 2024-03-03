@@ -3,6 +3,7 @@ package online.dailyq.api
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import online.dailyq.api.adapter.LocalDateAdapter
 import online.dailyq.api.converter.LocalDateConverterFactory
 import online.dailyq.api.response.Question
 import retrofit2.Retrofit
@@ -22,11 +23,12 @@ interface ApiService {
         private fun create(): ApiService {  // private => 외부에서 호출 불가
             val gson: Gson = GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .registerTypeAdapter(LocalDate::class.java, LocalDateAdapter)
                 .create()
             val retrofit = Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:5000")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addConverterFactory(LocalDateConverterFactory())
+                .baseUrl("http://10.0.2.2:5000")
                 .build()
             val api = retrofit.create(ApiService::class.java)
             return api
@@ -41,6 +43,8 @@ interface ApiService {
         fun getApi(): ApiService = API!!    // 이미 API가 생성 완료된 것으로 가정
     }
 
-    @GET("v1/questions/{qid}")
-    suspend fun getQuestion(@Path("qid") qid: LocalDate): Question
+    @GET("/v1/questions/{qid}")
+    suspend fun getQuestion(
+        @Path("qid") qid: LocalDate
+    ): Question
 }
